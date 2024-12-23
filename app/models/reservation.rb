@@ -1,11 +1,13 @@
-class Reservasion < ApplicationRecord
+class Reservation < ApplicationRecord
   belongs_to :user
   belongs_to :room
 
   validates :check_in_date, :check_out_date, :guest_count, presence: true
   validates :guest_count, numericality: { greater_than: 0 }
-  validates :check_in_date_must_be_today_or_future # チェックイン日が当日以降のバリデーション
-  validates :check_out_date_must_be_after_check_in_date # チェックアウト日がチェックイン日であるかのバリデーション
+
+  # カスタムバリデーション
+  validate :check_in_date_must_be_today_or_future
+  validate :check_out_date_must_be_after_check_in_date
 
   private
 

@@ -1,0 +1,4 @@
+<h1>予約を登録</h1>
+<%= render './shared/reservation_form.html.erb', room: @room, reservation: @reservation %>
+<%= link_to "予約一覧に戻る", room_reservations_path(@room) if @room %>
+

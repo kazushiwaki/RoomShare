@@ -1,0 +1,94 @@
+<div class="py-8">
+  <!-- 戻るボタン -->
+  <div class="absolute top-20 left-4">
+    <%= link_to "戻る", :back, class: "btn btn-outline btn-sm" %>
+  </div>
+
+  <h1 class="text-4xl font-bold text-center mb-8">予約一覧</h1>
+
+  <% if @room.present? %>
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-semibold"><%= @room.name %> の予約一覧</h2>
+      <%= link_to "新しい予約を作成", new_room_reservation_path(@room),
+          class: "btn btn-primary mt-4" %>
+    </div>
+  <% else %>
+    <h2 class="text-2xl font-semibold text-center mb-6">全ての予約一覧</h2>
+  <% end %>
+
+  <% if @reservations.any? %>
+    <div class="overflow-x-auto mt-6">
+      <table class="table w-full border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-left">施設画像</th>
+            <th class="px-4 py-2 text-left">施設名</th>
+            <th class="px-4 py-2 text-left">紹介文</th>
+            <th class="px-4 py-2 text-left">一泊料金</th>
+            <th class="px-4 py-2 text-left">合計料金</th>
+            <th class="px-4 py-2 text-left">チェックイン日</th>
+            <th class="px-4 py-2 text-left">チェックアウト日</th>
+            <th class="px-4 py-2 text-left">予約確定日時</th>
+            <th class="px-4 py-2 text-left">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reservations.each do |reservation| %>
+            <% nights = (reservation.check_out_date - reservation.check_in_date).to_i %>
+            <% total_price = reservation.room.price_per_night * nights %>
+            <tr class="hover:bg-gray-50">
+              <!-- 施設画像 -->
+              <td class="px-4 py-2 border-t">
+                <% if reservation.room.image.attached? %>
+                  <%= image_tag reservation.room.image.variant(resize_to_fill: [100, 80]).processed,
+                      class: "w-[100px] h-[80px] object-cover rounded-md" %>
+                <% else %>
+                  <%= image_tag "default-image-room.png",
+                      class: "w-[100px] h-[80px] object-cover rounded-md" %>
+                <% end %>
+              </td>
+              <!-- 施設名 -->
+              <td class="px-4 py-2 border-t font-bold">
+                <%= reservation.room.name %>
+              </td>
+              <!-- 紹介文 -->
+              <td class="px-4 py-2 border-t text-sm text-gray-600">
+                <%= reservation.room.description.truncate(50) %>
+              </td>
+              <!-- 一泊料金 -->
+              <td class="px-4 py-2 border-t">
+                <%= reservation.room.price_per_night %>
+              </td>
+              <!-- 合計料金 -->
+              <td class="px-4 py-2 border-t">
+                <%= total_price %>
+              </td>
+              <!-- チェックイン日 -->
+              <td class="px-4 py-2 border-t">
+                <%= reservation.check_in_date.strftime("%Y年%m月%d日") %>
+              </td>
+              <!-- チェックアウト日 -->
+              <td class="px-4 py-2 border-t">
+                <%= reservation.check_out_date.strftime("%Y年%m月%d日") %>
+              </td>
+              <!-- 予約確定日時 -->
+              <td class="px-4 py-2 border-t">
+                <%= reservation.created_at.strftime("%Y年%m月%d日 %H:%M:%S") %>
+              </td>
+              <!-- 編集ボタン -->
+              <td class="px-4 py-2 border-t">
+                <%= link_to "編集", edit_reservation_path(reservation),
+                    class: "btn btn-sm btn-secondary" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center text-gray-500 mt-10 p-10 bg-white rounded-lg shadow-md">
+      <i class="far fa-calendar-times text-4xl mb-4"></i>
+      <p>予約はまだありません。</p>
+    </div>
+  <% end %>
+</div>

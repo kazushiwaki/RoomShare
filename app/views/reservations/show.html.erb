@@ -1,0 +1,47 @@
+<div class="py-8 max-w-2xl mx-auto">
+  <h1 class="text-3xl font-bold text-center mb-6">予約確認</h1>
+
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <ul class="space-y-4">
+      <!-- チェックイン日 -->
+      <li class="flex justify-between items-center">
+        <span class="font-medium text-gray-700">チェックイン日:</span>
+        <span><%= @reservation.check_in_date.strftime("%Y年%m月%d日 %H:%M") %></span>
+      </li>
+
+      <!-- チェックアウト日 -->
+      <li class="flex justify-between items-center">
+        <span class="font-medium text-gray-700">チェックアウト日:</span>
+        <span><%= @reservation.check_out_date.strftime("%Y年%m月%d日 %H:%M") %></span>
+      </li>
+
+      <!-- 宿泊日数 -->
+      <li class="flex justify-between items-center">
+        <span class="font-medium text-gray-700">宿泊日数:</span>
+        <span>
+          <%= (@reservation.check_out_date.to_date - @reservation.check_in_date.to_date).to_i %>泊
+        </span>
+      </li>
+
+      <!-- 人数 -->
+      <li class="flex justify-between items-center">
+        <span class="font-medium text-gray-700">人数:</span>
+        <span><%= @reservation.guest_count %>人</span>
+      </li>
+
+      <!-- 支払い金額 -->
+      <li class="flex justify-between items-center">
+        <span class="font-medium text-gray-700">支払い金額:</span>
+        <span>
+          <%= number_to_currency(@reservation.total_price, unit: "¥") %>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 戻るボタン -->
+  <div class="mt-6 text-center">
+    <%= link_to "確定", room_reservations_path(@reservation.room), class: "btn btn-outline" %>
+    <%= link_to "戻る", :back, class: "btn btn-outline btn-sm" %>
+  </div>
+</div>

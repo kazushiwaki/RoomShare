@@ -1,0 +1,42 @@
+<div class="container mx-auto mt-10">
+  <!-- タブボタン -->
+  <div class="flex justify-center border-b max-w-md mx-auto">
+    <button
+      class="tab-button px-4 py-2 font-semibold text-blue-500 border-b-2 border-blue-500 hover:text-blue-500"
+      data-tab="account">
+      アカウント
+    </button>
+    <button
+      class="tab-button px-4 py-2 font-semibold text-gray-600 border-b-2 border-transparent hover:text-blue-500"
+      data-tab="profile">
+      プロフィール
+    </button>
+  </div>
+
+  <!-- タブコンテンツ -->
+  <div class="flex justify-center leading-loose">
+    <div class="tab-content mt-5" id="account">
+      <p class="mb-5"><span class="font-bold">メールアドレス:</span> <%= current_user.email %></p>
+      <p class="mb-5"><span class="font-bold">パスワード:</span>  <span class="align-middle">*********</span></p>
+      <div class="flex justify-center mt-10">
+        <%= link_to "編集", edit_account_user_path(@user.id), class: "btn btn-sm btn-info px-3 py-2 font-medium text-center" %>
+      </div>
+    </div>
+
+    <div class="tab-content mt-5 hidden" id="profile">
+      <p class="mb-5 flex items-center">
+        <span class="font-bold">画像アイコン:</span>
+        <% if @user.image.attached? %>
+          <%= image_tag @user.image.variant(resize_to_fill: [50, 50]), class: "rounded-full ml-2" %>
+        <% else %>
+          <%= image_tag "default-avatar.png", class: "rounded-full ml-2", size: "50x50" %>
+        <% end %>
+      </p>
+      <p class="mb-5"><span class="font-bold">名前:</span> <%= current_user.name %></p>
+      <p class="mb-5"><span class="font-bold">自己紹介:</span> <%= current_user.profile %></p>
+      <div class="flex justify-center mt-10">
+        <%= link_to "編集", edit_profile_user_path(@user.id), class: "btn btn-sm btn-info px-3 py-2 font-medium text-center" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="py-8">
+  <h1 class="text-4xl font-bold text-center mb-8">施設一覧</h1>
+
+  <!-- 検索バー -->
+  <div class="mb-10 mt-5 bg-white p-6 rounded-xl shadow-md border border-gray-100">
+    <form method="get" action="<%= rooms_path %>" class="flex flex-wrap items-end justify-center gap-4">
+      <!-- エリア検索 -->
+      <div class="form-control w-full md:w-1/4">
+        <label class="label">
+          <span class="label-text font-medium">エリア検索</span>
+        </label>
+        <select name="area" class="select select-bordered w-full hover:border-primary focus:border-primary">
+          <option value="">エリアを選択</option>
+          <option value="東京">東京</option>
+          <option value="大阪">大阪</option>
+          <option value="京都">京都</option>
+          <option value="札幌">札幌</option>
+        </select>
+      </div>
+
+      <!-- キーワード検索 -->
+      <div class="form-control w-full md:w-2/4">
+        <label class="label">
+          <span class="label-text font-medium">キーワード検索</span>
+        </label>
+        <input
+          type="text"
+          name="keyword"
+          placeholder="キーワード名を入力"
+          class="input input-bordered w-full hover:border-primary focus:border-primary"
+        />
+      </div>
+
+      <!-- 検索ボタン -->
+      <div class="w-full md:w-auto">
+        <button type="submit" class="btn btn-primary w-full md:w-auto min-w-[120px]">
+          <i class="fas fa-search mr-2"></i>検索
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 施設一覧 -->
+  <% if @rooms.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full justify-center">
+      <% @rooms.each do |room| %>
+        <div class="card bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden min-w-[250px]">
+          <% if room.image.attached? %>
+            <div class="relative h-48 overflow-hidden">
+              <%= image_tag room.image.variant(resize_to_fill: [300, 200]).processed,
+                  class: "w-full h-full object-cover" %>
+            </div>
+          <% else %>
+            <!-- 画像が無い場合はデフォルト画像を表示 -->
+            <div class="relative h-48 overflow-hidden">
+              <%= image_tag "default-image-room.png", class: "w-full h-full object-cover" %> <!-- デフォルト画像 -->
+            </div>
+          <% end %>
+
+          <div class="card-body p-4">
+              <h2 class="card-title text-base font-bold mb-2"><%= room.name %></h2>
+              <p class="card-title text-sm text-base mb-2"><%= room.address %></p>
+              <p class="text-base font-bold text-rose-400"><%= room.price_per_night %><span class="text-xs font-normal text-gray-600">円/日</span></p>
+            <p class="text-gray-600 text-xs mt-2"><%= room.description.truncate(50) %></p>
+            <div class="flex items-center text-gray-500 text-xs mt-2">
+              <i class="far fa-calendar-alt mr-1"></i>
+              <span>登録日: <%= room.created_at.strftime('%Y年%m月%d日') %></span>
+            </div>
+            <div class="card-actions flex justify-end gap-1 mt-3 pt-3 border-t">
+              <%= link_to room_reservations_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
+                <i class="far fa-calendar-check mr-1"></i>予約
+              <% end %>
+              <%= link_to edit_room_path(room), class: "btn btn-ghost btn-xs hover:bg-accent hover:text-white" do %>
+                <i class="far fa-edit mr-1"></i>編集
+              <% end %>
+              <%= link_to room_path(room),
+                  method: :delete,
+                  data: { confirm: "本当に削除しますか？" },
+                  class: "btn btn-ghost btn-xs hover:bg-error hover:text-white" do %>
+                <i class="far fa-trash-alt mr-1"></i>削除
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center text-gray-500 mt-10 p-10 bg-white rounded-lg shadow-md">
+      <i class="far fa-frown text-4xl mb-4"></i>
+      <p>現在、施設が登録されていません。</p>
+    </div>
+  <% end %>
+
+  <!-- 新しい施設を登録 -->
+  <div class="mt-10 text-center">
+    <%= link_to new_room_path, class: "btn btn-success btn-lg gap-2 shadow-lg hover:shadow-xl transition-shadow duration-300" do %>
+      <i class="fas fa-plus-circle"></i>
+      <span>新しい施設を登録</span>
+    <% end %>
+  </div>
+</div>

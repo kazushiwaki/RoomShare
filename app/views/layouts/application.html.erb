@@ -6,14 +6,27 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+    <header>
+      <%= render "./shared/header.html.erb" %>
+    </header>
+
+    <div class="min-h-screen">
+      <main class="container mx-auto mt-28 px-5">
+        <%= yield %>
+      </main>
+    </div>
+
+
+
+    <footer>
+      <%= render "./shared/footer.html.erb" %>
+    </footer>
   </body>
 </html>

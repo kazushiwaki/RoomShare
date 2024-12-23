@@ -1,0 +1,54 @@
+<%= form_with model: @room, local: true do |form| %>
+  <% if @room.errors.any? %>
+    <div class="error_explanation">
+      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
+      <ul>
+        <% @room.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <% if @room.errors[:name].any? %>
+      <div class="field-error"><%= @room.errors[:name].join(", ") %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+    <% if @room.errors[:description].any? %>
+      <div class="field-error"><%= @room.errors[:description].join(", ") %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+    <% if @room.errors[:address].any? %>
+      <div class="field-error"><%= @room.errors[:address].join(", ") %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :price_per_night %>
+    <%= form.number_field :price_per_night %>
+    <% if @room.errors[:price_per_night].any? %>
+      <div class="field-error"><%= @room.errors[:price_per_night].join(", ") %></div>
+    <% end %>
+  </div>
+
+  <!-- 画像アップロード -->
+  <div>
+    <%= form.label :image, "施設画像" %>
+    <%= form.file_field :image %>
+  </div>
+
+  <div>
+    <%= form.submit "施設を保存" %>
+  </div>
+<% end %>
