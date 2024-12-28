@@ -17,6 +17,22 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new
   end
 
+  def confirm
+    @reservation = current_user.reservations.new(reservation_params)
+    @room = Room.find_by(id: params[:reservation][:room_id])
+
+    if @room.nil?
+      flash[:alert] = "指定された施設が見つかりません"
+      redirect_to rooms_path
+      return
+    end
+
+    unless @reservation.valid?
+      flash.now[:alert] = "入力内容に誤りがあります"
+      render action: params[:reservation][:id].present? ? :edit : :new
+    end
+  end
+
   def create
     # room_id をフォームから受け取るため、params[:room_id] が有効かを確認
     @room = Room.find_by(id: params[:reservation][:room_id])  # reservationのパラメータ内にroom_idが含まれていることを確認

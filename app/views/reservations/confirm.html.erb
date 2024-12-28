@@ -1,0 +1,19 @@
+<h1>予約確認</h1>
+
+<p>施設名: <%= @room.name %></p>
+<p>チェックイン日: <%= @reservation.check_in_date %></p>
+<p>チェックアウト日: <%= @reservation.check_out_date %></p>
+<p>ゲスト人数: <%= @reservation.guest_count %></p>
+
+<%= form_with model: @reservation, url: @reservation.new_record? ? reservations_path : reservation_path(@reservation), method: @reservation.new_record? ? :post : :patch do |f| %>
+  <%= f.hidden_field :check_in_date %>
+  <%= f.hidden_field :check_out_date %>
+  <%= f.hidden_field :guest_count %>
+  <%= f.hidden_field :room_id %>
+
+  <div>
+    <%= f.submit "確定する", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "戻る", @reservation.new_record? ? new_reservation_path(room_id: @room.id) : edit_reservation_path(@reservation), class: "btn btn-secondary" %>

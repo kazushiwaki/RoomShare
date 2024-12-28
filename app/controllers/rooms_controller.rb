@@ -3,11 +3,15 @@ class RoomsController < ApplicationController
   before_action :set_user
 
   def index
-    @rooms = current_user.rooms
+    @rooms = Room.search(params, current_user)
   end
 
   def new
     @room = current_user.rooms.new
+  end
+
+  def show
+    @room = current_user.rooms.find(params[:id])
   end
 
   def create

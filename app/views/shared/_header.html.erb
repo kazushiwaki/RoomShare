@@ -5,51 +5,37 @@
   <!-- Main contentエリア -->
   <div class="drawer-content flex flex-col">
     <!-- Navbar部分 -->
-    <div class="navbar bg-base-300 w-full">
-      <div class="flex-none lg:hidden">
-        <label for="my-drawer-3" aria-label="Open sidebar" class="btn btn-square btn-ghost">
-          <!-- ハンバーガーメニューのアイコン -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-6 w-6 stroke-current">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </label>
+    <div class="navbar bg-[#1e3a8a] w-full">
+      <div class="mx-2 flex-1 px-2">
+        <%= link_to 'Room Share', root_path, class: 'text-2xl text-white' %>
       </div>
-      <div class="mx-2 flex-1 px-2"><%= link_to 'Room Share', root_path %></div>
       <div class="hidden flex-none lg:block">
         <ul class="menu menu-horizontal items-center">
-          <% if session[:user_id] %>
-            <li class="flex items-center"><%= link_to 'ログアウト', logout_path, method: :delete %></li>
-          <% else %>
-            <li class="flex items-center"><%= link_to 'ログイン', login_path %></li>
-            <li class="flex items-center"><%= link_to '新規登録', signup_path %></li>
+          <% unless session[:user_id] %>
+            <li><%= link_to 'ログイン', login_path, class: 'text-white' %></li>
+            <li><%= link_to '新規登録', signup_path, class: 'text-white' %></li>
           <% end %>
-          <li class="flex items-center">
-            <% if session[:user_id] %>
+          <% if session[:user_id] %>
+            <!-- ユーザー名とアバター -->
+            <li>
               <details class="dropdown dropdown-end">
-                <summary class="avatar btn btn-ghost">
-                  <div class="mask mask-squircle w-10">
-                    <p class="mb-5 flex items-center">
+                <summary class="flex items-center space-x-3 cursor-pointer text-white">
+                  <!-- アバター -->
+                  <div class="mask mask-squircle w-12 h-12">
                     <% if @user && @user.image.attached? %>
-                      <%= image_tag @user.image.variant(resize_to_fill: [50, 50]), class: "rounded-full ml-2" %>
+                      <%= image_tag @user.image.variant(resize_to_fill: [50, 50]), class: "rounded-full" %>
                     <% else %>
-                      <%= image_tag "default-avatar.png", class: "rounded-full ml-2", size: "50x50" %>
+                      <%= image_tag "default-avatar.png", class: "rounded-full", size: "50x50" %>
                     <% end %>
                   </div>
+                  <!-- ユーザー名 -->
+                  <span class="font-medium">
+                    <%= current_user.name %>
+                  </span>
                 </summary>
                 <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                   <li>
                     <%= link_to 'マイページ', user_path(session[:user_id]) %>
-                  </li>
-                  <li>
-                    <%= link_to 'ログアウト', logout_path, method: :delete %>
                   </li>
                   <li>
                     <%= link_to '施設一覧', rooms_path %>
@@ -57,24 +43,15 @@
                   <li>
                     <%= link_to '予約一覧', reservations_path %>
                   </li>
+                  <li>
+                    <%= link_to 'ログアウト', logout_path, method: :delete %>
+                  </li>
                 </ul>
               </details>
-            <% end %>
-          </li>
+            </li>
+          <% end %>
         </ul>
       </div>
     </div>
-  </div>
-
-  <!-- サイドバーコンテンツエリア -->
-  <div class="drawer-side">
-    <!-- オーバーレイ部分。これをクリックして閉じる。 -->
-    <label for="my-drawer-3" aria-label="Close sidebar" class="drawer-overlay"></label>
-
-    <ul class="menu bg-base-200 min-h-full w-64 p-4">
-      <li><a href="#">Sidebar Item 1</a></li>
-      <li><a href="#">Sidebar Item 2</a></li>
-      <li><a href="#">Sidebar Item 3</a></li>
-    </ul>
   </div>
 </div>

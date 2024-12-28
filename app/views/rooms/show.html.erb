@@ -1,0 +1,61 @@
+<div class="py-8 container mx-auto">
+  <!-- 戻るボタン -->
+  <div class="mb-5">
+    <%= link_to rooms_path, class: "btn btn-ghost text-primary hover:underline" do %>
+      <i class="fas fa-arrow-left mr-2"></i>戻る
+    <% end %>
+  </div>
+
+  <!-- 詳細情報 -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden flex flex-col md:flex-row">
+    <!-- 施設画像 -->
+    <% if @room.image.attached? %>
+      <div class="w-full md:w-1/2 h-60 md:h-auto">
+        <%= image_tag @room.image.variant(resize_to_fill: [600, 400]).processed,
+                      class: "w-full h-full object-cover" %>
+      </div>
+    <% else %>
+      <!-- デフォルト画像 -->
+      <div class="w-full md:w-1/2 h-60 md:h-auto">
+        <%= image_tag "default-image-room.png",
+                      class: "w-full h-full object-cover" %>
+      </div>
+    <% end %>
+
+    <!-- 詳細情報エリア -->
+    <div class="p-6 w-full md:w-1/2">
+      <!-- 施設名 -->
+      <h1 class="text-2xl font-bold mb-4"><%= @room.name %></h1>
+
+      <!-- 紹介文 -->
+      <p class="text-gray-700 mb-4 leading-relaxed"><%= @room.description %></p>
+
+      <!-- 宿泊料金 -->
+      <div class="text-lg font-bold text-gray-600 mb-4">
+        宿泊料金: <span class="text-rose-400"> <%= @room.price_per_night %></span><span class="text-sm text-gray-600"> /日</span>
+      </div>
+
+      <!-- 住所 -->
+      <div class="text-gray-600 mb-4">
+        <i class="fas fa-map-marker-alt mr-2"></i>
+        <span>住所: <%= @room.address %></span>
+      </div>
+
+      <!-- ボタンエリア -->
+      <div class="flex items-center gap-3 mt-5">
+        <!-- 編集ボタン -->
+        <%= link_to edit_room_path(@room), class: "btn btn-accent btn-md hover:bg-accent-focus hover:text-white" do %>
+          <i class="fas fa-edit mr-2"></i>編集
+        <% end %>
+
+        <!-- 削除ボタン -->
+        <%= link_to room_path(@room),
+                    method: :delete,
+                    data: { confirm: "本当に削除しますか？" },
+                    class: "btn btn-error btn-md hover:bg-error-focus hover:text-white" do %>
+          <i class="fas fa-trash-alt mr-2"></i>削除
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

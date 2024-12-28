@@ -13,11 +13,19 @@ Rails.application.routes.draw do
   end
 
   # 予約単独
-  resources :reservations, only: [:index, :new, :create, :edit, :update, :destroy]
+  resources :reservations, only: [:index, :new, :create, :edit, :update, :destroy] do
+    collection do
+      post :confirm # 予約の確認画面
+    end
+  end
 
   # 施設単独、施設に関する予約のルーティング
   resources :rooms do
-    resources :reservations, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :reservations, only: [:index, :new, :show, :create, :edit, :update, :destroy] do
+      collection do
+        post :confirm
+      end
+    end
   end
 
     # ユーザー登録ページのルーティング（signup）

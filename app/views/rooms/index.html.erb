@@ -1,4 +1,4 @@
-<div class="py-8">
+<div class="py-8 container mx-auto">
   <h1 class="text-4xl font-bold text-center mb-8">施設一覧</h1>
 
   <!-- 検索バー -->
@@ -40,6 +40,15 @@
     </form>
   </div>
 
+  <!-- 検索結果件数 -->
+<% if @rooms.any? && (params[:area].present? || params[:keyword].present?) %>
+  <div class="mb-6 text-gray-700 text-center">
+    <p class="text-lg font-medium">
+      検索結果: <span class="text-primary"><%= @rooms.count %></span> 件が見つかりました
+    </p>
+  </div>
+<% end %>
+
   <!-- 施設一覧 -->
   <% if @rooms.any? %>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full justify-center">
@@ -64,9 +73,12 @@
             <p class="text-gray-600 text-xs mt-2"><%= room.description.truncate(50) %></p>
             <div class="flex items-center text-gray-500 text-xs mt-2">
               <i class="far fa-calendar-alt mr-1"></i>
-              <span>登録日: <%= room.created_at.strftime('%Y年%m月%d日') %></span>
+              <span>施設作成日: <%= room.created_at.to_s(:datetime_jp) %></span>
             </div>
             <div class="card-actions flex justify-end gap-1 mt-3 pt-3 border-t">
+              <%= link_to room_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
+                <i class="far fa-calendar-check mr-1"></i>詳細
+              <% end %>
               <%= link_to room_reservations_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
                 <i class="far fa-calendar-check mr-1"></i>予約
               <% end %>

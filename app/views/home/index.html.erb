@@ -1,24 +1,43 @@
-<div class="min-h-screen bg-gray-100 flex items-center justify-center">
-  <div class="max-w-4xl w-full mx-auto text-center px-4">
-    <h1 class="text-4xl font-bold text-gray-800">
-      ようこそ！宿泊施設貸し借りアプリへ
-    </h1>
-    <p class="mt-4 text-gray-600">
-      簡単に宿泊施設を探して貸し借りができるプラットフォームです。
-    </p>
-    <div class="mt-6 flex justify-center gap-4">
-      <a
-        href="#"
-        class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
-      >
-        今すぐ探す
-      </a>
-      <a
-        href="#"
-        class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300"
-      >
-        詳しく見る
-      </a>
+<div class="w-full h-screen bg-cover bg-center bg-no-repeat bg-[url('istockphoto-1354385636-2048x2048.jpg')]">
+  <div class="flex items-center justify-center h-full">
+    <div class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mx-auto max-w-[1300px] w-full">
+      <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">探したい施設を見つけよう</h1>
+      <form method="get" action="<%= rooms_path %>" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- エリア検索 -->
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium text-gray-700">エリアを選択</span>
+          </label>
+          <select name="area" class="select select-bordered w-full hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            <option value="">エリアを選択</option>
+            <option value="東京">東京</option>
+            <option value="大阪">大阪</option>
+            <option value="京都">京都</option>
+            <option value="札幌">札幌</option>
+          </select>
+        </div>
+
+        <!-- キーワード検索 -->
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-medium text-gray-700">キーワードを入力</span>
+          </label>
+          <input
+            type="text"
+            name="keyword"
+            placeholder="例: 家族向け、ペット可"
+            class="input input-bordered w-full hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          />
+        </div>
+
+        <!-- 検索ボタン -->
+        <div class="flex items-end">
+          <button type="submit" class="btn btn-primary w-full md:w-auto px-6 py-3 rounded-lg text-white font-medium shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <i class="fas fa-search mr-2"></i>今すぐ探す
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
