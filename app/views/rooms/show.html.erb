@@ -1,8 +1,8 @@
 <div class="py-8 container mx-auto">
   <!-- 戻るボタン -->
   <div class="mb-5">
-    <%= link_to rooms_path, class: "btn btn-ghost text-primary hover:underline" do %>
-      <i class="fas fa-arrow-left mr-2"></i>戻る
+    <%= link_to rooms_path, class: "btn btn-ghost text-primary" do %>
+      <i class="fas fa-arrow-left mr-1"></i>戻る
     <% end %>
   </div>
 
@@ -32,7 +32,7 @@
 
       <!-- 宿泊料金 -->
       <div class="text-lg font-bold text-gray-600 mb-4">
-        宿泊料金: <span class="text-rose-400"> <%= @room.price_per_night %></span><span class="text-sm text-gray-600"> /日</span>
+        宿泊料金: <span class="text-rose-400"> ￥<%= number_with_delimiter(@room.price_per_night, delimiter: ',') %></span><span class="text-sm text-gray-600"> /日</span>
       </div>
 
       <!-- 住所 -->
@@ -43,17 +43,19 @@
 
       <!-- ボタンエリア -->
       <div class="flex items-center gap-3 mt-5">
-        <!-- 編集ボタン -->
-        <%= link_to edit_room_path(@room), class: "btn btn-accent btn-md hover:bg-accent-focus hover:text-white" do %>
-          <i class="fas fa-edit mr-2"></i>編集
-        <% end %>
+        <% if current_user == @room.user %>
+          <!-- 編集ボタン -->
+          <%= link_to edit_room_path(@room), class: "btn btn-accent btn-md hover:bg-accent-focus hover:text-white" do %>
+            <i class="fas fa-edit mr-2"></i>編集
+          <% end %>
 
-        <!-- 削除ボタン -->
-        <%= link_to room_path(@room),
-                    method: :delete,
-                    data: { confirm: "本当に削除しますか？" },
-                    class: "btn btn-error btn-md hover:bg-error-focus hover:text-white" do %>
-          <i class="fas fa-trash-alt mr-2"></i>削除
+          <!-- 削除ボタン -->
+          <%= link_to room_path(@room),
+                      method: :delete,
+                      data: { confirm: "本当に削除しますか？" },
+                      class: "btn btn-error btn-md hover:bg-error-focus hover:text-white" do %>
+            <i class="fas fa-trash-alt mr-2"></i>削除
+          <% end %>
         <% end %>
       </div>
     </div>

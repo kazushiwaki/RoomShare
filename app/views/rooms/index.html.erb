@@ -26,7 +26,7 @@
         <input
           type="text"
           name="keyword"
-          placeholder="キーワード名を入力"
+          placeholder="例: 家族向け、ペット可"
           class="input input-bordered w-full hover:border-primary focus:border-primary"
         />
       </div>
@@ -67,29 +67,28 @@
           <% end %>
 
           <div class="card-body p-4">
-              <h2 class="card-title text-base font-bold mb-2"><%= room.name %></h2>
+              <h2 class="card-title text-base font-bold mb-2"><%= link_to room.name, room_path(room) %></h2>
               <p class="card-title text-sm text-base mb-2"><%= room.address %></p>
-              <p class="text-base font-bold text-rose-400"><%= room.price_per_night %><span class="text-xs font-normal text-gray-600">円/日</span></p>
+              <p class="text-base font-bold text-rose-400">￥<%= number_with_delimiter(room.price_per_night, delimiter: ',') %><span class="text-xs font-normal text-gray-600">円/日</span></p>
             <p class="text-gray-600 text-xs mt-2"><%= room.description.truncate(50) %></p>
             <div class="flex items-center text-gray-500 text-xs mt-2">
               <i class="far fa-calendar-alt mr-1"></i>
               <span>施設作成日: <%= room.created_at.to_s(:datetime_jp) %></span>
             </div>
             <div class="card-actions flex justify-end gap-1 mt-3 pt-3 border-t">
-              <%= link_to room_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
-                <i class="far fa-calendar-check mr-1"></i>詳細
-              <% end %>
-              <%= link_to room_reservations_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
+              <%= link_to new_room_reservation_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
                 <i class="far fa-calendar-check mr-1"></i>予約
               <% end %>
-              <%= link_to edit_room_path(room), class: "btn btn-ghost btn-xs hover:bg-accent hover:text-white" do %>
-                <i class="far fa-edit mr-1"></i>編集
-              <% end %>
-              <%= link_to room_path(room),
-                  method: :delete,
-                  data: { confirm: "本当に削除しますか？" },
-                  class: "btn btn-ghost btn-xs hover:bg-error hover:text-white" do %>
-                <i class="far fa-trash-alt mr-1"></i>削除
+              <% if current_user == room.user %>
+                <%= link_to edit_room_path(room), class: "btn btn-ghost btn-xs hover:bg-accent hover:text-white" do %>
+                  <i class="far fa-edit mr-1"></i>編集
+                <% end %>
+                <%= link_to room_path(room),
+                    method: :delete,
+                    data: { confirm: "本当に削除しますか？" },
+                    class: "btn btn-ghost btn-xs hover:bg-error hover:text-white" do %>
+                  <i class="far fa-trash-alt mr-1"></i>削除
+                <% end %>
               <% end %>
             </div>
           </div>

@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id # ログイン状態にするため
       redirect_to root_path, notice: "アカウントを作成しました！"
     else
-      render new_user_path, status: :unprocessable_entity # バリデーションエラー時にエラーメッセージを表示するために記載
+      render "new", status: :unprocessable_entity # バリデーションエラー時にエラーメッセージを表示するために記載
     end
   end
 
@@ -32,16 +32,17 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "アカウント情報が更新されました！"
     else
-      render "edit_accout"
+      render "edit_account"
     end
   end
 
   def update_profile
     @user = User.find(params[:id])
+
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "アカウント情報が更新されました！"
     else
-      render "edit_accout"
+      render "edit_profile"
     end
   end
 

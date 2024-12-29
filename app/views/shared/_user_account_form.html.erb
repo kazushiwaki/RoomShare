@@ -1,20 +1,50 @@
 <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg mt-9">
   <h2 class="text-4xl font-semibold text-gray-800 mb-6 text-center">アカウント編集</h2>
-  <%= form_with(model: @user, url: update_account_user_path(@user), method: :patch, remote: true) do |f| %>
-    <div class="mb-4 mt-6">
-      <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium text-left" %>
-      <%= f.email_field :email, class: "border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-    </div>
 
-    <div class="mt-6 mb-6">
-      <%= f.label :password, "新しいパスワード", class: "block text-gray-700 font-medium text-left" %>
-      <%= f.password_field :password, class: "border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-    </div>
+  <%= form_with(model: @user, url: update_account_user_path(@user), method: :patch, remote: true) do |form| %>
 
-    <div class="mt-6 mb-6">
-      <%= f.label :password_confirmation, "パスワード再確認", class: "block text-gray-700 font-medium text-left" %>
-      <%= f.password_field :password_confirmation, class: "border border-gray-300 rounded p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-    </div>
+      <!-- メールアドレスの入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <%= form.label :email, "メールアドレス", class: "label w-auto" %>
+          <% if @user.errors[:email].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @user.errors[:email].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.email_field :email, class: "input input-bordered w-full" %>
+      </div>
+
+    <!-- パスワードの入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <%= form.label :password, "パスワード", class: "label w-auto" %>
+          <% if @user.errors[:password].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @user.errors[:password].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.password_field :password, class: "input input-bordered w-full" %>
+      </div>
+
+      <!-- パスワード確認の入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <%= form.label :password_confirmation, "パスワード確認", class: "label w-auto" %>
+          <% if @user.errors[:password_confirmation].any? %>
+            <p class="text-red-500 text-sm ml-2">
+                <%= @user.errors[:password_confirmation].first %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.password_field :password_confirmation, class: "input input-bordered w-full" %>
+      </div>
 
     <div class="flex justify-center gap-4 ">
     <div class="mt-6 mb-6">
@@ -23,7 +53,7 @@
 
     <!-- 更新ボタンにマージンを追加 -->
     <div class="mt-6 mb-6">
-      <%= f.submit "更新", class: "btn btn-sm btn-info px-4" %>
+      <%= form.submit "更新", class: "btn btn-sm btn-info px-4" %>
     </div>
     </div>
   <% end %>

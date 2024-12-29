@@ -1,5 +1,14 @@
+    <% if @user.errors.any? %>
+      <% @user.errors.full_messages.each do |message| %>
+        <ul>
+          <li><%= message %></li>
+        </ul>
+      <% end %>
+    <% end %>
+
 <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg mt-9">
   <h2 class="text-4xl font-semibold text-gray-800 mb-6 text-center">プロフィール編集</h2>
+
   <%= form_with(model: @user, url: update_profile_user_path(@user), method: :patch, remote: true, multipart: true) do |f| %>
     <div class="mb-4 mt-6">
       <%= f.label :image, "プロフィール画像", class: "block text-gray-700 font-medium text-left" %>

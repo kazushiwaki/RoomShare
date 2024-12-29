@@ -11,17 +11,21 @@ class Room < ApplicationRecord
 
   def self.search(params, user)
     # ログイン中のユーザーの施設を取得
-    rooms = user.rooms
+    rooms = Room.all
 
-    # エリア検索
-    if params[:area].present? && %w[東京 大阪 京都 札幌].include?(params[:area])
-      rooms = rooms.where("address LIKE ?", "%#{params[:area]}%")
-    end
+    if params[:keyword].present? || params[:area].present?
+      # エリア検索
+      if params[:area].present? && %w[東京 大阪 京都 札幌].include?(params[:area])
+        rooms = rooms.where("address LIKE ?", "#{params[:area]}%")
+      end
 
-    # キーワード検索
-    if params[:keyword].present?
-      keyword = params[:keyword]
-      rooms = rooms.where("name LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
+      # キーワード検索
+      if params[:keyword].present?
+        keyword = params[:keyword]
+        rooms = rooms.where("name LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
+      end
+    else
+      rooms = rooms.where(user_id: user.id)
     end
 
     rooms

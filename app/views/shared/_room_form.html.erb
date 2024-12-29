@@ -1,54 +1,65 @@
-<%= form_with model: @room, local: true do |form| %>
-  <% if @room.errors.any? %>
-    <div class="error_explanation">
-      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
-      <ul>
-        <% @room.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+<div class="flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md border border-gray-200">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">施設情報の登録・編集</h1>
+
+    <%= form_with model: @room, local: true, class: "space-y-4" do |form| %>
+      <% if @room.errors.any? %>
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <h2 class="text-lg font-bold mb-2"><%= pluralize(@room.errors.count, "エラー") %>が発生しました:</h2>
+          <ul class="list-disc list-inside">
+            <% @room.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- 部屋名 -->
+      <div class="form-control">
+        <%= form.label :name, "部屋名", class: "label" %>
+        <%= form.text_field :name, class: "input input-bordered w-full" %>
+        <% if @room.errors[:name].any? %>
+          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:name].join(", ") %></div>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+      </div>
 
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-    <% if @room.errors[:name].any? %>
-      <div class="field-error"><%= @room.errors[:name].join(", ") %></div>
+      <!-- 説明 -->
+      <div class="form-control">
+        <%= form.label :description, "説明", class: "label" %>
+        <%= form.text_area :description, rows: 5, class: "textarea textarea-bordered w-full" %>
+        <% if @room.errors[:description].any? %>
+          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:description].join(", ") %></div>
+        <% end %>
+      </div>
+
+      <!-- 住所 -->
+      <div class="form-control">
+        <%= form.label :address, "住所", class: "label" %>
+        <%= form.text_field :address, class: "input input-bordered w-full" %>
+        <% if @room.errors[:address].any? %>
+          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:address].join(", ") %></div>
+        <% end %>
+      </div>
+
+      <!-- 価格 -->
+      <div class="form-control">
+        <%= form.label :price_per_night, "1泊あたりの価格", class: "label" %>
+        <%= form.number_field :price_per_night, class: "input input-bordered w-full" %>
+        <% if @room.errors[:price_per_night].any? %>
+          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:price_per_night].join(", ") %></div>
+        <% end %>
+      </div>
+
+      <!-- 画像アップロード -->
+      <div class="form-control">
+        <%= form.label :image, "施設画像", class: "label" %>
+        <%= form.file_field :image, class: "file-input file-input-bordered w-full" %>
+      </div>
+
+      <!-- 送信ボタン -->
+      <div>
+        <%= form.submit "施設を保存", class: "btn btn-primary w-full" %>
+      </div>
     <% end %>
   </div>
-
-  <div>
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-    <% if @room.errors[:description].any? %>
-      <div class="field-error"><%= @room.errors[:description].join(", ") %></div>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form.label :address %>
-    <%= form.text_field :address %>
-    <% if @room.errors[:address].any? %>
-      <div class="field-error"><%= @room.errors[:address].join(", ") %></div>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form.label :price_per_night %>
-    <%= form.number_field :price_per_night %>
-    <% if @room.errors[:price_per_night].any? %>
-      <div class="field-error"><%= @room.errors[:price_per_night].join(", ") %></div>
-    <% end %>
-  </div>
-
-  <!-- 画像アップロード -->
-  <div>
-    <%= form.label :image, "施設画像" %>
-    <%= form.file_field :image %>
-  </div>
-
-  <div>
-    <%= form.submit "施設を保存" %>
-  </div>
-<% end %>
+</div>

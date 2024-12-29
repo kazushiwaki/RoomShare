@@ -24,12 +24,11 @@
             <th class="px-4 py-2 text-left">施設画像</th>
             <th class="px-4 py-2 text-left">施設名</th>
             <th class="px-4 py-2 text-left">紹介文</th>
-            <th class="px-4 py-2 text-left">一泊料金</th>
             <th class="px-4 py-2 text-left">合計料金</th>
             <th class="px-4 py-2 text-left">チェックイン日</th>
             <th class="px-4 py-2 text-left">チェックアウト日</th>
             <th class="px-4 py-2 text-left">予約確定日時</th>
-            <th class="px-4 py-2 text-left">操作</th>
+            <th class="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody>
@@ -55,13 +54,9 @@
               <td class="px-4 py-2 border-t text-sm text-gray-600">
                 <%= reservation.room.description.truncate(50) %>
               </td>
-              <!-- 一泊料金 -->
-              <td class="px-4 py-2 border-t">
-                <%= reservation.room.price_per_night %>
-              </td>
               <!-- 合計料金 -->
               <td class="px-4 py-2 border-t">
-                <%= total_price %>
+                ￥<%= number_with_delimiter(total_price, delimiter: ',') %>
               </td>
               <!-- チェックイン日 -->
               <td class="px-4 py-2 border-t">

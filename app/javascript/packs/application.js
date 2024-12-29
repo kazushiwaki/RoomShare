@@ -8,6 +8,8 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 
+import { handleFlashMessages } from "./flash"
+
 // rails-ujsを起動する
 Rails.start()
 Turbolinks.start()
@@ -50,3 +52,6 @@ document.addEventListener("turbolinks:load", function () {
 });
 
 
+document.addEventListener("turbolinks:load", () => {
+  handleFlashMessages();
+});
