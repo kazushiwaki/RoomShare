@@ -6,6 +6,17 @@ ja:
         email: メールアドレス
         password: パスワード
         password_digest: パスワード確認
+      room:
+        name: 部屋名
+        description: 部屋の説明
+        address: 住所
+        price_per_night: 1泊あたりの金額
+      reservation:
+        check_in_date: チェックイン
+        check_out_date: チェックアウト
+        guest_count: 人数
     errors:
       messages:
         blank: "%{attribute}は必須項目です"
+        not_a_number: "金額には数値を入力してください"
+        greater_than: "1泊あたりの価格は0より大きい値を入力してください"

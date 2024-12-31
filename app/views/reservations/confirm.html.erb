@@ -1,19 +1,28 @@
-<h1>予約確認</h1>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+  <h1 class="text-2xl font-bold text-center mb-6">予約確認</h1>
 
-<p>施設名: <%= @room.name %></p>
-<p>チェックイン日: <%= @reservation.check_in_date %></p>
-<p>チェックアウト日: <%= @reservation.check_out_date %></p>
-<p>ゲスト人数: <%= @reservation.guest_count %></p>
+  <div class="mb-4">
+    <% nights = (@reservation.check_out_date - @reservation.check_in_date).to_i %>
+    <% total_price = @reservation.room.price_per_night * nights %>
 
-<%= form_with model: @reservation, url: @reservation.new_record? ? reservations_path : reservation_path(@reservation), method: @reservation.new_record? ? :post : :patch do |f| %>
-  <%= f.hidden_field :check_in_date %>
-  <%= f.hidden_field :check_out_date %>
-  <%= f.hidden_field :guest_count %>
-  <%= f.hidden_field :room_id %>
-
-  <div>
-    <%= f.submit "確定する", class: "btn btn-primary" %>
+    <p class="text-lg font-medium">施設名: <span class="text-gray-700"><%= @room.name %></span></p>
+    <p class="text-lg font-medium">チェックイン日: <span class="text-gray-700"><%= @reservation.check_in_date %></span></p>
+    <p class="text-lg font-medium">チェックアウト日: <span class="text-gray-700"><%= @reservation.check_out_date %></span></p>
+    <p class="text-lg font-medium">宿泊日数: <span class="text-gray-700"><%= (@reservation.check_out_date - @reservation.check_in_date).to_i %>泊</span></p>
+    <p class="text-lg font-medium">ゲスト人数: <span class="text-gray-700"><%= @reservation.guest_count %></span></p>
+    <p class="text-lg font-medium">支払い金額: <span class="text-gray-700">¥<%= number_with_delimiter(total_price, delimiter: ',') %></span></p>
   </div>
-<% end %>
 
-<%= link_to "戻る", @reservation.new_record? ? new_reservation_path(room_id: @room.id) : edit_reservation_path(@reservation), class: "btn btn-secondary" %>
+  <div class="mt-6 flex justify-between items-center">
+    <%= form_with model: @reservation, url: @reservation.new_record? ? reservations_path : reservation_path(@reservation), method: @reservation.new_record? ? :post : :patch do |f| %>
+      <%= f.hidden_field :check_in_date %>
+      <%= f.hidden_field :check_out_date %>
+      <%= f.hidden_field :guest_count %>
+      <%= f.hidden_field :room_id %>
+
+      <%= f.submit "確定する", class: "btn btn-primary" %>
+    <% end %>
+
+    <%= link_to "戻る", @reservation.new_record? ? new_reservation_path(room_id: @room.id) : edit_reservation_path(@reservation), class: "btn btn-secondary" %>
+  </div>
+</div>

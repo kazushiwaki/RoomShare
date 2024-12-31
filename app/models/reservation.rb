@@ -3,7 +3,7 @@ class Reservation < ApplicationRecord
   belongs_to :room
 
   validates :check_in_date, :check_out_date, :guest_count, presence: true
-  validates :guest_count, numericality: { greater_than: 0 }
+  validates :guest_count, numericality: { greater_than: 0, allow_blank: true }
 
   # カスタムバリデーション
   validate :check_in_date_must_be_today_or_future

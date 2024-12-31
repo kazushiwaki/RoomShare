@@ -3,51 +3,65 @@
     <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">施設情報の登録・編集</h1>
 
     <%= form_with model: @room, local: true, class: "space-y-4" do |form| %>
-      <% if @room.errors.any? %>
-        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-          <h2 class="text-lg font-bold mb-2"><%= pluralize(@room.errors.count, "エラー") %>が発生しました:</h2>
-          <ul class="list-disc list-inside">
-            <% @room.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
+
+      <!-- 部屋名の入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <%= form.label :name, "部屋名", class: "label" %>
+          <% if @room.errors[:name].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @room.errors[:name].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
         </div>
-      <% end %>
-
-      <!-- 部屋名 -->
-      <div class="form-control">
-        <%= form.label :name, "部屋名", class: "label" %>
         <%= form.text_field :name, class: "input input-bordered w-full" %>
-        <% if @room.errors[:name].any? %>
-          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:name].join(", ") %></div>
-        <% end %>
       </div>
 
-      <!-- 説明 -->
+            <!-- 説明の入力フィールド -->
       <div class="form-control">
-        <%= form.label :description, "説明", class: "label" %>
+        <div class="flex items-center">
+          <%= form.label :description, "説明", class: "label" %>
+          <% if @room.errors[:description].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @room.errors[:description].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
         <%= form.text_area :description, rows: 5, class: "textarea textarea-bordered w-full" %>
-        <% if @room.errors[:description].any? %>
-          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:description].join(", ") %></div>
-        <% end %>
       </div>
 
-      <!-- 住所 -->
+      <!-- 住所の入力フィールド -->
       <div class="form-control">
-        <%= form.label :address, "住所", class: "label" %>
+        <div class="flex items-center">
+          <%= form.label :address, "住所", class: "label" %>
+          <% if @room.errors[:address].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @room.errors[:address].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
         <%= form.text_field :address, class: "input input-bordered w-full" %>
-        <% if @room.errors[:address].any? %>
-          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:address].join(", ") %></div>
-        <% end %>
       </div>
 
-      <!-- 価格 -->
+      <!-- 価格の入力フィールド -->
       <div class="form-control">
-        <%= form.label :price_per_night, "1泊あたりの価格", class: "label" %>
-        <%= form.number_field :price_per_night, class: "input input-bordered w-full" %>
-        <% if @room.errors[:price_per_night].any? %>
-          <div class="text-sm text-red-600 mt-1"><%= @room.errors[:price_per_night].join(", ") %></div>
-        <% end %>
+        <div class="flex items-center">
+          <%= form.label :price_per_night, "1泊あたりの価格", class: "label" %>
+          <% if @room.errors[:price_per_night].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% @room.errors[:price_per_night].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.number_field :price_per_night, class: "input input-bordered w-full", min: 1 %>
       </div>
 
       <!-- 画像アップロード -->
