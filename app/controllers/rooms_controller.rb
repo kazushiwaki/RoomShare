@@ -39,7 +39,8 @@ class RoomsController < ApplicationController
   def destroy
     @room = current_user.rooms.find(params[:id])
     @room.destroy
-    redirect_to rooms_path, notice: "施設が削除されました"
+    flash[:notice] = "施設が削除されました"
+    render json: { message: "施設が削除されました", type: "notice" }, status: :ok
   end
 
   private

@@ -1,3 +1,15 @@
+<!-- 削除確認モーダル -->
+<div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
+    <h2 class="text-lg font-bold text-gray-800 mb-4">削除確認</h2>
+    <p class="text-gray-600 mb-6">このスケジュールを削除してもよろしいですか？</p>
+    <div class="flex justify-center space-x-3">
+      <button id="cancel-button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">キャンセル</button>
+      <a id="confirm-delete-link" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer">削除</a>
+    </div>
+  </div>
+</div>
+
 <div class="py-8 container mx-auto">
   <h1 class="text-4xl font-bold text-center mb-8">施設一覧</h1>
 
@@ -83,12 +95,11 @@
                 <%= link_to edit_room_path(room), class: "btn btn-ghost btn-xs hover:bg-accent hover:text-white" do %>
                   <i class="far fa-edit mr-1"></i>編集
                 <% end %>
-                <%= link_to room_path(room),
-                    method: :delete,
-                    data: { confirm: "本当に削除しますか？" },
-                    class: "btn btn-ghost btn-xs hover:bg-error hover:text-white" do %>
-                  <i class="far fa-trash-alt mr-1"></i>削除
-                <% end %>
+
+                <%= link_to '<i class="far fa-trash-alt mr-1"></i>削除'.html_safe, "javascript:void(0);",
+                method: :delete,
+                class: "delete-link btn btn-ghost btn-xs hover:bg-accent hover:text-white",
+                data: { url: room_path(room) } %>
               <% end %>
             </div>
           </div>

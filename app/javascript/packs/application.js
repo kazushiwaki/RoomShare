@@ -55,3 +55,58 @@ document.addEventListener("turbolinks:load", function () {
 document.addEventListener("turbolinks:load", () => {
   handleFlashMessages();
 });
+
+
+
+// 削除モーダル
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("delete-modal");
+  const cancelButton = document.getElementById("cancel-button");
+  const confirmDeleteLink = document.getElementById("confirm-delete-link");
+  let deleteUrl = "";
+
+  // 削除リンククリックイベント
+  document.body.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-link")) {
+      event.preventDefault();
+      deleteUrl = event.target.dataset.url; // data-urlからURL取得
+      modal.classList.remove("hidden"); // モーダルを表示
+      console.log("Delete URL:", deleteUrl);
+    }
+  });
+
+  // キャンセルボタンでモーダルを閉じる
+  cancelButton.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    deleteUrl = ""; // URLをクリア
+  });
+
+  // 確定ボタンで削除リクエストを送信
+  confirmDeleteLink.addEventListener("click", () => {
+    if (deleteUrl) {
+      console.log("Sending DELETE request to:", deleteUrl);
+      fetch(deleteUrl, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
+          "Accept": "application/json"
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json(); // レスポンスをJSONとして解析
+          } else {
+            throw new Error("削除に失敗しました。");
+          }
+        })
+        .then(() => {
+          window.location.reload(); // ページをリロード
+        })
+        .catch(error => {
+          alert(error.message || "エラーが発生しました。");
+        });
+
+      modal.classList.add("hidden"); // モーダルを閉じる
+    }
+  });
+});
