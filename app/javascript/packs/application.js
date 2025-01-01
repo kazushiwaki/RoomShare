@@ -59,7 +59,7 @@ document.addEventListener("turbolinks:load", () => {
 
 
 // 削除モーダル
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbolinks:load", () => {
   const modal = document.getElementById("delete-modal");
   const cancelButton = document.getElementById("cancel-button");
   const confirmDeleteLink = document.getElementById("confirm-delete-link");
