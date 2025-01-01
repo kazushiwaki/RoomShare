@@ -17,7 +17,7 @@
             </p>
           <% end %>
         </div>
-        <%= form.datetime_local_field :check_in_date, class: "input input-bordered w-full" %>
+        <%= form.date_field :check_in_date, class: "input input-bordered w-full" %>
       </div>
 
       <!-- チェックアウトの入力フィールド -->
@@ -32,7 +32,7 @@
             </p>
           <% end %>
         </div>
-        <%= form.datetime_local_field :check_out_date, class: "input input-bordered w-full" %>
+        <%= form.date_field :check_out_date, class: "input input-bordered w-full" %>
       </div>
 
       <!-- 人数の入力フィールド -->

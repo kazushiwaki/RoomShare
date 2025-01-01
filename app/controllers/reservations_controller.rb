@@ -7,6 +7,7 @@ class ReservationsController < ApplicationController
   def index
     if @room.present?
       @reservations = @room.reservations.includes(:user)
+      @room = Room.all
     else
       @reservations = current_user.reservations.includes(:room)
     end
@@ -71,8 +72,10 @@ class ReservationsController < ApplicationController
   end
 
   def destroy
+    @reservation = Reservation.find(params[:id])
     @reservation.destroy
-    redirect_to reservations_path, notice: '予約が削除されました'
+    flash[:notice] = "予約が削除されました"
+    render json: { message: "施設が削除されました", type: "notice" }, status: :ok
   end
 
   private

@@ -1,20 +1,24 @@
+<!-- 削除確認モーダル -->
+<div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 flex flex-col items-center">
+    <h2 class="text-lg font-bold text-gray-800 mb-4 text-center">削除確認</h2>
+    <p class="text-gray-600 mb-6 text-center">この予約を削除してもよろしいですか？</p>
+    <div class="flex justify-center space-x-3">
+      <button id="cancel-button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">キャンセル</button>
+      <a id="confirm-delete-link" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer">削除</a>
+    </div>
+  </div>
+</div>
+
 <div class="py-8">
   <!-- 戻るボタン -->
-  <div class="absolute top-20 left-4">
-    <%= link_to "戻る", :back, class: "btn btn-outline btn-sm" %>
+  <div class="mb-5">
+    <%= link_to rooms_path, class: "btn btn-ghost text-primary" do %>
+      <i class="fas fa-arrow-left mr-1"></i>戻る
+    <% end %>
   </div>
 
   <h1 class="text-4xl font-bold text-center mb-8">予約一覧</h1>
-
-  <% if @room.present? %>
-    <div class="text-center mb-6">
-      <h2 class="text-2xl font-semibold"><%= @room.name %> の予約一覧</h2>
-      <%= link_to "新しい予約を作成", new_room_reservation_path(@room),
-          class: "btn btn-primary mt-4" %>
-    </div>
-  <% else %>
-    <h2 class="text-2xl font-semibold text-center mb-6">全ての予約一覧</h2>
-  <% end %>
 
   <% if @reservations.any? %>
     <div class="overflow-x-auto mt-6">
@@ -28,6 +32,7 @@
             <th class="px-4 py-2 text-left">チェックイン日</th>
             <th class="px-4 py-2 text-left">チェックアウト日</th>
             <th class="px-4 py-2 text-left">予約確定日時</th>
+            <th class="px-4 py-2"></th>
             <th class="px-4 py-2"></th>
           </tr>
         </thead>
@@ -48,7 +53,7 @@
               </td>
               <!-- 施設名 -->
               <td class="px-4 py-2 border-t font-bold">
-                <%= reservation.room.name %>
+                <%= link_to reservation.room.name, room_path(reservation.room) %></h2>
               </td>
               <!-- 紹介文 -->
               <td class="px-4 py-2 border-t text-sm text-gray-600">
@@ -71,9 +76,16 @@
                 <%= reservation.created_at.to_s(:datetime_time_and_minutes_jp) %>
               </td>
               <!-- 編集ボタン -->
-              <td class="px-4 py-2 border-t">
+              <td class="px-2 py-2 border-t">
                 <%= link_to "編集", edit_reservation_path(reservation),
-                    class: "btn btn-sm btn-secondary" %>
+                    class: "btn btn-md btn-secondary hover:bg-accent-focus" %>
+              </td>
+              <!-- 削除ボタン -->
+              <td class="px-2 py-2 border-t">
+                <%= link_to "削除".html_safe, "javascript:void(0);",
+                method: :delete,
+                class: "delete-link btn btn-error btn-md hover:bg-error-focus",
+                data: { url: reservation_path(reservation) } %>
               </td>
             </tr>
           <% end %>
