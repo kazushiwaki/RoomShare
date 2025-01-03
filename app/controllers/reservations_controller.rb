@@ -20,7 +20,7 @@ class ReservationsController < ApplicationController
 
   def confirm
     @room = Room.find(params[:reservation][:room_id])
-  
+
     if params[:reservation][:id].present?
       @reservation = Reservation.find(params[:reservation][:id])
       @reservation.assign_attributes(reservation_params)
@@ -28,7 +28,7 @@ class ReservationsController < ApplicationController
       @reservation = Reservation.new(reservation_params)
       @reservation.user = current_user
     end
-  
+
     if @reservation.valid?
       render :confirm
     else
@@ -39,7 +39,7 @@ class ReservationsController < ApplicationController
 
   def create
     @room = Room.find(params[:reservation][:room_id])
-  
+
     if params[:reservation][:id].present?
       # 既存の予約を取得して更新
       @reservation = Reservation.find(params[:reservation][:id])
@@ -48,7 +48,7 @@ class ReservationsController < ApplicationController
       # 新しい予約を作成
       @reservation = current_user.reservations.build(reservation_params)
     end
-  
+
     if @reservation.save
       redirect_to reservations_path, notice: '予約が確定しました。'
     else
