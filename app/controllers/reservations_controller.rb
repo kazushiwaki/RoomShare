@@ -15,7 +15,8 @@ class ReservationsController < ApplicationController
 
   def new
     @room = Room.find(params[:room_id])  # 予約画面に遷移する際、`room_id` を渡す
-    @reservation = Reservation.new
+    @reservation = Reservation.new(reservation_params) if params[:reservation].present?
+    @reservation ||= Reservation.new
   end
 
   def confirm
@@ -61,8 +62,6 @@ class ReservationsController < ApplicationController
   end
 
   def edit
-    puts "Reservation: #{@reservation.inspect}"
-    puts "Room: #{@room.inspect}"
   end
 
   def update

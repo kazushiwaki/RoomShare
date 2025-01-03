@@ -6,8 +6,8 @@
     <% total_price = @reservation.room.price_per_night * nights %>
 
     <p class="text-lg font-medium">施設名: <span class="text-gray-700"><%= @room.name %></span></p>
-    <p class="text-lg font-medium">チェックイン日: <span class="text-gray-700"><%= @reservation.check_in_date %></span></p>
-    <p class="text-lg font-medium">チェックアウト日: <span class="text-gray-700"><%= @reservation.check_out_date %></span></p>
+    <p class="text-lg font-medium">チェックイン日: <span class="text-gray-700"><%= @reservation.check_in_date.to_s(:datetime_jp) %></span></p>
+    <p class="text-lg font-medium">チェックアウト日: <span class="text-gray-700"><%= @reservation.check_out_date.to_s(:datetime_jp) %></span></p>
     <p class="text-lg font-medium">宿泊日数: <span class="text-gray-700"><%= (@reservation.check_out_date - @reservation.check_in_date).to_i %>泊</span></p>
     <p class="text-lg font-medium">ゲスト人数: <span class="text-gray-700"><%= @reservation.guest_count %></span></p>
     <p class="text-lg font-medium">支払い金額: <span class="text-gray-700">¥<%= number_with_delimiter(total_price, delimiter: ',') %></span></p>
@@ -23,6 +23,6 @@
       <%= f.submit "確定する", class: "btn btn-primary" %>
     <% end %>
 
-    <%= link_to "戻る", @reservation.new_record? ? new_reservation_path(room_id: @room.id) : edit_reservation_path(@reservation), class: "btn btn-secondary" %>
+    <%= link_to "戻る", @reservation.new_record? ? new_reservation_path(room_id: @room.id, reservation: @reservation.attributes) : edit_reservation_path(@reservation), class: "btn btn-secondary" %>
   </div>
 </div>
