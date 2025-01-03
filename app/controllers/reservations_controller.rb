@@ -19,38 +19,40 @@ class ReservationsController < ApplicationController
   end
 
   def confirm
-    @reservation = current_user.reservations.new(reservation_params)
-    @room = Room.find_by(id: params[:reservation][:room_id])
-
-    if @room.nil?
-      flash[:alert] = "指定された施設が見つかりません"
-      redirect_to rooms_path
-      return
+    @room = Room.find(params[:reservation][:room_id])
+  
+    if params[:reservation][:id].present?
+      @reservation = Reservation.find(params[:reservation][:id])
+      @reservation.assign_attributes(reservation_params)
+    else
+      @reservation = Reservation.new(reservation_params)
+      @reservation.user = current_user
     end
-
-    unless @reservation.valid?
-      flash.now[:alert] = "入力内容に誤りがあります"
-      render action: params[:reservation][:id].present? ? :edit : :new
+  
+    if @reservation.valid?
+      render :confirm
+    else
+      action = @reservation.new_record? ? :new : :edit
+      render action
     end
   end
 
   def create
-    # room_id をフォームから受け取るため、params[:room_id] が有効かを確認
-    @room = Room.find_by(id: params[:reservation][:room_id])  # reservationのパラメータ内にroom_idが含まれていることを確認
-
-    if @room.nil?
-      flash[:alert] = "指定された施設が見つかりません"
-      redirect_to rooms_path
-      return
-    end
-
-    # フォームから送信された予約を作成
-    @reservation = current_user.reservations.new(reservation_params)
-
-    if @reservation.save
-      redirect_to reservations_path, notice: '予約が登録されました'
+    @room = Room.find(params[:reservation][:room_id])
+  
+    if params[:reservation][:id].present?
+      # 既存の予約を取得して更新
+      @reservation = Reservation.find(params[:reservation][:id])
+      @reservation.assign_attributes(reservation_params)
     else
-      render :new
+      # 新しい予約を作成
+      @reservation = current_user.reservations.build(reservation_params)
+    end
+  
+    if @reservation.save
+      redirect_to reservations_path, notice: '予約が確定しました。'
+    else
+      render :confirm
     end
   end
 
