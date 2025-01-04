@@ -1,3 +1,39 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root "home#index"
+
+  resources :sessions, only: [:new, :create, :destroy]
+
+  resources :users, only: [:new, :create, :show, :update, :edit] do
+    member do
+      get :edit_account
+      patch :update_account
+      get :edit_profile
+      patch :update_profile
+    end
+  end
+
+  # 予約単独
+  resources :reservations, only: [:index, :new, :create, :edit, :update, :destroy] do
+    collection do
+      post :confirm # 予約の確認画面
+    end
+  end
+
+  # 施設単独、施設に関する予約のルーティング
+  resources :rooms do
+    resources :reservations, only: [:index, :new, :show, :create, :edit, :update, :destroy] do
+      collection do
+        post :confirm
+      end
+    end
+  end
+
+    # ユーザー登録ページのルーティング（signup）
+    get '/signup', to: 'users#new', as: 'signup'
+    post '/signup', to: 'users#create'
+
+    # ログイン関連
+    get '/login', to: 'sessions#new'
+    post '/login', to: 'sessions#create'
+    delete '/logout', to: 'sessions#destroy'
 end

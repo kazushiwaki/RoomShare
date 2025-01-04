@@ -33,6 +33,13 @@ gem 'psych', '~> 3.1'
 gem 'rails-i18n'
   # デバッグ対応のため
   gem 'pry-rails'
+  # パスワードの暗号化
+  gem 'bcrypt', '~> 3.1.7'
+  # tailwindcssの導入
+  gem 'tailwindcss-rails'
+  # ActiveStorageの導入
+  gem 'image_processing', '~> 1.2'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

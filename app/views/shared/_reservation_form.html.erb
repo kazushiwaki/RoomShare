@@ -1,0 +1,61 @@
+<div class="py-8 max-w-md mx-auto">
+  <h1 class="text-3xl font-bold text-center mb-6">予約フォーム</h1>
+
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <%= form_with model: reservation, url: confirm_reservations_path, method: :post, local: true, class: "space-y-4" do |form| %>
+      <%= form.hidden_field :room_id, value: room.id %>
+      <!-- hidden_fieldで予約IDを保持 -->
+      <%= form.hidden_field :id if reservation.persisted? %>
+
+      <!-- チェックインの入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <label class="block font-medium text-gray-700 mb-1" for="reservation_check_in_date">チェックイン日</label>
+          <% if reservation.errors[:check_in_date].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% reservation.errors[:check_in_date].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.date_field :check_in_date, class: "input input-bordered w-full" %>
+      </div>
+
+      <!-- チェックアウトの入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <label class="block font-medium text-gray-700 mb-1" for="reservation_check_out_date">チェックアウト日</label>
+          <% if reservation.errors[:check_out_date].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% reservation.errors[:check_out_date].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.date_field :check_out_date, class: "input input-bordered w-full" %>
+      </div>
+
+            <!-- 人数の入力フィールド -->
+      <div class="form-control">
+        <div class="flex items-center">
+          <label class="block font-medium text-gray-700 mb-1" for="reservation_guest_count">人数</label>
+          <% if reservation.errors[:guest_count].any? %>
+            <p class="text-red-500 text-sm ml-2">
+              <% reservation.errors[:guest_count].each do |message| %>
+                <%= message %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+        <%= form.number_field :guest_count, class: "input input-bordered w-full", min: 1 %>
+      </div>
+
+      <!-- 送信ボタン -->
+      <div class="text-center">
+        <%= form.submit "確認画面へ進む", class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -18,5 +18,9 @@ module RoomShare
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # ロケールを日本語に変更
+    config.i18n.default_locale = :ja
+    # 日本標準時
+    config.time_zone = 'Tokyo'
   end
 end

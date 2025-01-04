@@ -1,0 +1,8 @@
+<!-- 戻るボタン -->
+  <div class="mb-5 pt-8">
+    <%= link_to reservations_path, class: "btn btn-ghost text-primary" do %>
+      <i class="fas fa-arrow-left mr-1"></i>戻る
+    <% end %>
+  </div>
+
+<%= render './shared/reservation_form.html.erb', room: @room, reservation: @reservation %>

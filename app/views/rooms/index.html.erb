@@ -1,0 +1,125 @@
+<!-- 削除確認モーダル -->
+<div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 flex flex-col items-center">
+    <h2 class="text-lg font-bold text-gray-800 mb-4 text-center">削除確認</h2>
+    <p class="text-gray-600 mb-6 text-center">この予約を削除してもよろしいですか？</p>
+    <div class="flex justify-center space-x-3">
+      <button id="cancel-button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">キャンセル</button>
+      <a id="confirm-delete-link" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer">削除</a>
+    </div>
+  </div>
+</div>
+
+<div class="py-8 container mx-auto">
+  <h1 class="text-4xl font-bold text-center mb-8">施設一覧</h1>
+
+  <!-- 検索バー -->
+  <div class="mb-10 mt-5 bg-white p-6 rounded-xl shadow-md border border-gray-100">
+    <form method="get" action="<%= rooms_path %>" class="flex flex-wrap items-end justify-center gap-4">
+      <!-- エリア検索 -->
+      <div class="form-control w-full md:w-1/4">
+        <label class="label">
+          <span class="label-text font-medium">エリア検索</span>
+        </label>
+        <select name="area" class="select select-bordered w-full hover:border-primary focus:border-primary">
+          <option value="">エリアを選択</option>
+          <option value="東京">東京</option>
+          <option value="大阪">大阪</option>
+          <option value="京都">京都</option>
+          <option value="札幌">札幌</option>
+        </select>
+      </div>
+
+      <!-- キーワード検索 -->
+      <div class="form-control w-full md:w-2/4">
+        <label class="label">
+          <span class="label-text font-medium">キーワード検索</span>
+        </label>
+        <input
+          type="text"
+          name="keyword"
+          placeholder="例: 家族向け、ペット可"
+          class="input input-bordered w-full hover:border-primary focus:border-primary"
+        />
+      </div>
+
+      <!-- 検索ボタン -->
+      <div class="w-full md:w-auto">
+        <button type="submit" class="btn btn-primary w-full md:w-auto min-w-[120px]">
+          <i class="fas fa-search mr-2"></i>検索
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 検索結果件数 -->
+<% if @rooms.any? && (params[:area].present? || params[:keyword].present?) %>
+  <div class="mb-6 text-gray-700 text-center">
+    <p class="text-lg font-medium">
+      検索結果: <span class="text-primary"><%= @rooms.count %></span> 件が見つかりました
+    </p>
+  </div>
+<% end %>
+
+  <!-- 施設一覧 -->
+  <% if @rooms.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full justify-center">
+      <% @rooms.each do |room| %>
+        <div class="card bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden min-w-[250px]">
+          <% if room.image.attached? %>
+            <div class="relative h-48 overflow-hidden">
+              <%= image_tag room.image.variant(resize_to_fill: [300, 200]).processed,
+                  class: "w-full h-full object-cover" %>
+            </div>
+          <% else %>
+            <!-- 画像が無い場合はデフォルト画像を表示 -->
+            <div class="relative h-48 overflow-hidden">
+              <%= image_tag "default-image-room.png", class: "w-full h-full object-cover" %> <!-- デフォルト画像 -->
+            </div>
+          <% end %>
+
+          <div class="card-body p-4">
+            <%= link_to room_path(room), class: "block" do %>
+              <h2 class="card-title text-base font-bold mb-2"><%= room.name %></h2>
+              <p class="card-title text-sm text-base mb-2"><%= room.address %></p>
+              <p class="text-base font-bold text-rose-400">￥<%= number_with_delimiter(room.price_per_night, delimiter: ',') %><span class="text-xs font-normal text-gray-600">/日</span></p>
+            <p class="text-gray-600 text-xs mt-2"><%= room.description.truncate(50) %></p>
+            <% end %>
+            <div class="flex items-center text-gray-500 text-xs mt-2">
+              <i class="far fa-calendar-alt mr-1"></i>
+              <span>施設作成日: <%= room.created_at.to_s(:datetime_jp) %></span>
+            </div>
+            <div class="card-actions flex justify-end gap-1 mt-3 pt-3 border-t">
+              <%= link_to new_room_reservation_path(room), class: "btn btn-ghost btn-xs hover:bg-secondary hover:text-white" do %>
+                <i class="far fa-calendar-check mr-1"></i>予約
+              <% end %>
+              <% if current_user == room.user %>
+                <%= link_to edit_room_path(room), class: "btn btn-ghost btn-xs hover:bg-accent hover:text-white" do %>
+                  <i class="far fa-edit mr-1"></i>編集
+                <% end %>
+
+                <%= link_to '<i class="far fa-trash-alt mr-1"></i>削除'.html_safe, "javascript:void(0);",
+                method: :delete,
+                class: "delete-link btn btn-ghost btn-xs hover:bg-accent hover:text-white",
+                data: { url: room_path(room) } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center text-gray-500 mt-10 p-10 bg-white rounded-lg shadow-md">
+      <i class="far fa-frown text-4xl mb-4"></i>
+      <p>現在、施設が登録されていません。</p>
+    </div>
+  <% end %>
+
+  <!-- 新しい施設を登録 -->
+  <div class="mt-10 text-center">
+    <%= link_to new_room_path, class: "btn btn-success btn-lg gap-2 shadow-lg hover:shadow-xl transition-shadow duration-300" do %>
+      <i class="fas fa-plus-circle"></i>
+      <span>新しい施設を登録</span>
+    <% end %>
+  </div>
+</div>

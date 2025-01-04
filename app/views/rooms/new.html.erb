@@ -1,0 +1,12 @@
+<!-- 戻るボタン -->
+  <div class="mt-5">
+    <%= link_to rooms_path, class: "btn btn-ghost text-primary" do %>
+      <i class="fas fa-arrow-left mr-1"></i>戻る
+    <% end %>
+  </div>
+
+<div class="flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-2xl p-6 rounded-lg">
+    <%= render './shared/room_form.html.erb', room: @room %>
+  </div>
+</div>
